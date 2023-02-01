@@ -10,16 +10,15 @@ public class Read_Input : MonoBehaviour
 {
     public bool useAngle = true;
     public bool useLocation = true;
-    public Vector3 weights = new Vector3(1f, 1f, 1f);
-    public float speed = 10; 
+    public Vector3 location_weights = new Vector3(1f, 1f, 1f);
+    public Vector3 angle_weights = new Vector3(1f, 1f, 1f);
     public int PORT = 7112;
     private Vector3 target_location;
     private Vector3 target_angle;
     private UdpClient udpClient;
     private CharacterController controller; 
     private IPEndPoint groupEP;
-    public float fix_loc = 1;
-    public Vector3 zeroPoint;
+    public Vector3 offset;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +31,8 @@ public class Read_Input : MonoBehaviour
         //udpClient.JoinMulticastGroup(IPAddress.Any);
         target_location = transform.position;
         target_angle = transform.rotation.eulerAngles; 
-        zeroPoint = transform.position;
+
+        // offset = transform.position;
     }
 
     async void ReadTargets(){
@@ -45,16 +45,15 @@ public class Read_Input : MonoBehaviour
                     var temp = new Vector3(BitConverter.ToSingle( bytes, 8),
                     BitConverter.ToSingle( bytes, 4 ), 
                     BitConverter.ToSingle( bytes, 0 ));
-                    target_location = -temp * fix_loc;
-                    target_location =  Vector3.Scale(target_location, weights);
+                    target_location =  Vector3.Scale(target_location, location_weights);
                 }
                 if (useAngle){
                     var temp = new Vector3(BitConverter.ToSingle( bytes, 16 ),
-                    0f,
+                    BitConverter.ToSingle( bytes, 20 ),
                     BitConverter.ToSingle( bytes, 12)
-                    // BitConverter.ToSingle( bytes, 20 )
+                    // 
                     );
-                    target_angle = temp;
+                    target_angle = Vector3.Scale(temp, angle_weights);
                 }
                 
                 
@@ -72,14 +71,14 @@ public class Read_Input : MonoBehaviour
         this.ReadTargets();
         if (useLocation)
         {
-            controller.Move((target_location - (transform.position + zeroPoint)) * Time.deltaTime * speed);
+            transform.position = (target_location + offset);
         }
         if (useAngle) 
         {
             // transform.Rotate(target_angle);
             // transform.localEulerAngles = target_angle;
             // transform.eulerAngles = target_angle;
-            transform.rotation = Quaternion.EulerRotation(target_angle);
+            transform.Rotate(target_angle - transform.rotation.eulerAngles, Space.Self);
         }
         
     }
