@@ -35,6 +35,6 @@ while True:
     # print(angle)
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP) as sock:
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-            sock.sendto(struct.pack('ffffff', xyz[0], xyz[1], xyz[2], 
-                                    angle[0], angle[1], angle[2]),
-                        ("255.255.255.255", port))
+            pack = struct.pack('ffffff', xyz[0], xyz[1], xyz[2], 
+                                    angle[0], angle[1], angle[2])
+            sock.sendto(pack, ("255.255.255.255", port))

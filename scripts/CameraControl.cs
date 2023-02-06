@@ -37,7 +37,6 @@ public class CameraControl : MonoBehaviour
             }
         }
         if (level == tag.Length){
-            Debug.Log("setting to defult");
             cam.position = defultLocation;
             cam.rotation = defultRotation;
         }
@@ -46,11 +45,13 @@ public class CameraControl : MonoBehaviour
     private void setPositionToOther(Collider other){
         try {
             Transform temp = other.transform.GetChild(0);
-            Debug.Log("view changing to: "+ temp.name);
+            // Debug.Log("view changing to: "+ temp.name);
             cam.position = temp.position;
             cam.rotation = temp.rotation;
         }
-        finally { Debug.Log($"error: bad use of tag {other.tag}");}
+        finally {
+            //  Debug.Log($"error: bad use of tag {other.tag}");
+        }
     }
     // Update is called once per frame
     void Update()

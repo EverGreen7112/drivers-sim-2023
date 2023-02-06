@@ -19,7 +19,7 @@ public class Read_Input : MonoBehaviour
     public Vector3 target_angle;
     private UdpClient udpClient;
     // private CharacterController controller; 
-    private IPEndPoint groupEP;
+    // private IPEndPoint groupEP;
     public Vector3 offset;
     // Start is called before the first frame update
     void Start()
@@ -109,35 +109,35 @@ public class Read_Input : MonoBehaviour
     }
 
 
-    async void ReadTargets(){
-        await Task.Run(() => {
-            byte[] bytes;
-            try{
-                bytes = udpClient.Receive(ref groupEP);
-                //Debug.Log($"x: {BitConverter.ToSingle( bytes, 0 )} y: {BitConverter.ToSingle( bytes, 4 )} z: {BitConverter.ToSingle( bytes, 8)}");
-                if (useLocation){
-                    var temp = new Vector3(BitConverter.ToSingle(bytes, 8),
-                    BitConverter.ToSingle( bytes, 4 ), 
-                    BitConverter.ToSingle( bytes, 0 ));
-                    target_location = Vector3.Scale(temp, location_weights);
-                }
-                if (useAngle){
-                    var temp = new Vector3(BitConverter.ToSingle( bytes, 20 ),
-                    BitConverter.ToSingle( bytes, 16 ),
-                    BitConverter.ToSingle( bytes, 12)
-                    // 
-                    );
-                    target_angle = Vector3.Scale(temp, angle_weights);
-                }
+    // async void ReadTargets(){
+    //     await Task.Run(() => {
+    //         byte[] bytes;
+    //         try{
+    //             bytes = udpClient.Receive(ref groupEP);
+    //             //Debug.Log($"x: {BitConverter.ToSingle( bytes, 0 )} y: {BitConverter.ToSingle( bytes, 4 )} z: {BitConverter.ToSingle( bytes, 8)}");
+    //             if (useLocation){
+    //                 var temp = new Vector3(BitConverter.ToSingle(bytes, 8),
+    //                 BitConverter.ToSingle( bytes, 4 ), 
+    //                 BitConverter.ToSingle( bytes, 0 ));
+    //                 target_location = Vector3.Scale(temp, location_weights);
+    //             }
+    //             if (useAngle){
+    //                 var temp = new Vector3(BitConverter.ToSingle( bytes, 20 ),
+    //                 BitConverter.ToSingle( bytes, 16 ),
+    //                 BitConverter.ToSingle( bytes, 12)
+    //                 // 
+    //                 );
+    //                 target_angle = Vector3.Scale(temp, angle_weights);
+    //             }
                 
                 
-            } 
-            catch{
-                Debug.Log("failed");
-            } 
-        });
+    //         } 
+    //         catch{
+    //             Debug.Log("failed");
+    //         } 
+    //     });
         
-    }
+    // }
 
     // Update is called once per frame
     void Update()

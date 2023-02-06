@@ -32,8 +32,8 @@ public class UdpSocketManager {
     private readonly object _localIpEndPointLock = new object();
 
     private readonly string _serverIp;
-    private readonly int _serverPort;
-    private readonly int _clientPort;
+    private readonly int _serverPort = 0;
+    private readonly int _clientPort = 0;
 
     // this field is always used in _udpClientLock blocks, so it doesn't need a seperate lock
     private IAsyncResult _currentAsyncResult = null;
@@ -61,6 +61,7 @@ public class UdpSocketManager {
      */
     public IEnumerator initSocket() {
 
+
         // check whether send & receive threads are alive, if so close them first
         if ((_sendThread != null && _sendThread.IsAlive) || (_receiveThread != null && _receiveThread.IsAlive)) {
             closeSocketThreads();
@@ -74,7 +75,7 @@ public class UdpSocketManager {
         _sendQueue.Clear();
         _receiveQueue.Clear();
         _udpClient = null;
-        _listenPort = 0;
+        // _listenPort = 0;
         _shouldRun = true;
 
         // start Send & receive threads
@@ -122,7 +123,6 @@ public class UdpSocketManager {
     public int getListenPort() {
         return _listenPort;
     }
-
     /**
      * Returns true if listen port has bound successfully
      */

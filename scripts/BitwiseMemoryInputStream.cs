@@ -45,7 +45,8 @@ public class BitwiseMemoryInputStream {
             resBytes[i] = readBits(8);
             ++i;
         }
-        return bytesToInt(resBytes);
+        return BitConverter.ToInt32(resBytes, 0);
+        // return bytesToInt(resBytes);
     }
 
     /**
