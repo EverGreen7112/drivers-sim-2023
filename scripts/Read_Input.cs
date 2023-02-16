@@ -14,7 +14,7 @@ public class Read_Input : MonoBehaviour
     public bool useLocation = true;
     public Vector3 location_weights = new Vector3(1f, 1f, 1f);
     public Vector3 angle_weights = new Vector3(1f, 1f, 1f);
-    public int PORT = 7112;
+    public int PORT = 5804;
     public Vector3 target_location;
     public Vector3 target_angle;
     private UdpClient udpClient;

@@ -10,7 +10,7 @@ public class cubesAndConesLocator : MonoBehaviour
     private static Vector3[] _cones = new Vector3[]{new Vector3(0,0,0)};
     public GameObject cone;
     public GameObject cube;
-    public int PORT = 4590; // cant be this in actual competition
+    public int PORT = 5801; // cant be this in actual competition
     public Transform offset;
     private List<GameObject> cones = new List<GameObject>{};
     private List<GameObject> cubes = new List<GameObject>{};
