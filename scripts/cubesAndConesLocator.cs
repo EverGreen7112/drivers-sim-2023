@@ -12,13 +12,14 @@ public class cubesAndConesLocator : MonoBehaviour
     public GameObject cube;
     public int PORT = 5801; // cant be this in actual competition
     public Transform offset;
+    private Quaternion _turn90 = Quaternion.Euler(0f, -90f, 0f);
     private List<GameObject> cones = new List<GameObject>{};
     private List<GameObject> cubes = new List<GameObject>{};
     // private cubesAndCones _cubesAndCones;
     void Start()
     {
         // _cubesAndCones = new cubesAndCones("127.0.0.1", PORT, PORT);
-        _udpSocketManager = new UdpSocketManager("127.0.0.1", PORT, PORT);
+        _udpSocketManager = new UdpSocketManager("0.0.0.0", PORT, PORT);
         StartCoroutine(_udpSocketManager.initSocket());
         StartCoroutine(receiveStream());
         if (cube == null) {
@@ -127,7 +128,7 @@ public class cubesAndConesLocator : MonoBehaviour
             } else if (cones[i] == null) {
                 cones[i] = GameObject.Instantiate(cone);
             }
-            cones[i].transform.position = offset.position + _cones[i];
+            cones[i].transform.position = _turn90 * (offset.rotation * (offset.position + _cones[i]));
 
         }
         if (_cones.Length < cones.Count) {
@@ -143,7 +144,14 @@ public class cubesAndConesLocator : MonoBehaviour
             } else if (cubes[i] == null) {
                 cubes[i] = GameObject.Instantiate(cube);
             }
-            cubes[i].transform.position = offset.position + _cubes[i];
+            try{
+                // Debug.Log("cubes length: " + _cubes.Length.ToString() + " i: " + i.ToString());
+                cubes[i].transform.position = _turn90 * (offset.rotation * (offset.position + _cubes[i]));
+            }
+            catch{
+                Destroy(cubes[i]);
+            }
+            
         }
         if (_cubes.Length < cubes.Count) {
             for (int i = _cubes.Length; i < cubes.Count; i++) {

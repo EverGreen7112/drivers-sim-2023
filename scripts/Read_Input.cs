@@ -25,7 +25,7 @@ public class Read_Input : MonoBehaviour
     void Start()
     {
 
-        _udpSocketManager = new UdpSocketManager("127.0.0.1", PORT, PORT);
+        _udpSocketManager = new UdpSocketManager("0.0.0.0", PORT, PORT);
         StartCoroutine(_udpSocketManager.initSocket());
         StartCoroutine(receiveStream());
         // controller = gameObject.GetComponent<CharacterController>();
@@ -71,29 +71,35 @@ public class Read_Input : MonoBehaviour
                 while (recPackets.Count < 1) {
                     yield return null;
                     recPackets = _udpSocketManager.receive();
+                    // Debug.Log(recPackets);
                 }
-
+                Debug.Log("read input");
                 byte[] echoPacket = recPackets[0];
-
                 BitwiseMemoryInputStream inStream = new BitwiseMemoryInputStream(echoPacket);
                 if (useLocation){
+                    try{
                             var temp = new Vector3(inStream.readFloat(),
                             inStream.readFloat(), 
                             inStream.readFloat());
                             target_location = Vector3.Scale(temp, location_weights);
+                    }
+                    catch {}
                 }
                 if (useAngle){
+                    try{
                             var temp = new Vector3(inStream.readFloat(),
                             inStream.readFloat(),
                             inStream.readFloat()
                             // 
                             );
                             target_angle = Vector3.Scale(temp, angle_weights);
+                    }
+                    catch {}
                 }
                 // Debug.Log("finished read");
             }
             finally {
-                // Debug.Log("failed");
+                    Debug.Log("failed");
             }
         }
         // Debug.Assert(inStream.readBool() == true);

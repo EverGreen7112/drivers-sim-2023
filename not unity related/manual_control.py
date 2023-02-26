@@ -5,7 +5,7 @@ import keyboard
 
 # this code allows you to control the robot in the simulation using your keyboard
 # this code still sends data over LAN 
-port = 7112 # cant be this in actual competition
+port = 5804 
 
 xyz = [0.0, 0.0, 0.0]
 angle = [0.0, 0.0, 0.0]
